@@ -8,10 +8,11 @@ export const postApi = createApi({
   }),
   tagTypes: ["Posts"], // Used for Caching
   endpoints: (builder) => ({
-    getPosts: builder.query<Post[], string>({
-      query: (name) => `pokemon/${name}`,
+    getPosts: builder.query<Post[], void>({
+      query: () => `/posts`,
+      providesTags: ["Posts"],
     }),
   }),
 });
 
-export const {} = postApi;
+export const { useGetPostsQuery } = postApi;

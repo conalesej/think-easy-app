@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
+import { PostsSection, TopBar } from "./components/organisms";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const App = () => {
   return (
     <>
-      <h1 className="text-3xl font-bold underline text-center">Hello World</h1>
+      <Flex flex={1} direction={"column"} gap={"1rem"}>
+        <TopBar />
+        <PostsSection />
+      </Flex>
     </>
   );
-}
+};
 
 export default App;

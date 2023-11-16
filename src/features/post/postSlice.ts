@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { postApi } from "./api";
 import { Post } from "./types";
 
 export interface PostState {
@@ -27,6 +28,15 @@ export const postSlice = createSlice({
     increment: (state) => {
       // Write shit here
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(
+      postApi.endpoints.getPosts.matchFulfilled,
+      (state, action) => {
+        const { payload } = action;
+        state.posts = payload;
+      }
+    );
   },
 });
 
