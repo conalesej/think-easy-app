@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Post, PostResponse } from "./types";
+import { Post } from "./types";
 
 export interface PostState {
   currentPost: Post;
-  posts: PostResponse[];
+  posts: Post[];
 }
 
 const initialState: PostState = {
@@ -17,7 +17,7 @@ const initialState: PostState = {
     updatedAt: "",
     authorId: "",
   } as Post,
-  posts: [] as PostResponse[],
+  posts: [] as Post[],
 };
 
 export const postSlice = createSlice({

@@ -1,16 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Post } from "./types";
 
-// Define a service using a base URL and expected endpoints
-export const pokemonApi = createApi({
-  reducerPath: "pokemonApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "https://pokeapi.co/api/v2/" }),
+export const postApi = createApi({
+  reducerPath: "postApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://frontend-test-be.stage.thinkeasy.cz",
+  }),
+  tagTypes: ["Posts"], // Used for Caching
   endpoints: (builder) => ({
-    getPokemonByName: builder.query<Pokemon, string>({
+    getPosts: builder.query<Post[], string>({
       query: (name) => `pokemon/${name}`,
     }),
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetPokemonByNameQuery } = pokemonApi;
+export const {} = postApi;

@@ -19,5 +19,3 @@ export interface Post {
 
   authorId: string;
 }
-
-export interface PostResponse extends Post {}
