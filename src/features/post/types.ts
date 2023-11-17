@@ -5,7 +5,7 @@ export interface PostInput {
   title: string;
   content: string;
   published: boolean;
-  author: Author;
+  author?: Author;
 }
 
 export interface Post {
