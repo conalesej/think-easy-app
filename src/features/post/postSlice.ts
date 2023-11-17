@@ -34,7 +34,12 @@ export const postSlice = createSlice({
       postApi.endpoints.getPosts.matchFulfilled,
       (state, action) => {
         const { payload } = action;
-        state.posts = payload;
+        const sortedArray = payload.sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
+          return dateB - dateA;
+        });
+        state.posts = sortedArray;
       }
     );
   },
