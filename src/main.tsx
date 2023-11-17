@@ -9,12 +9,21 @@ import { store } from "./store.ts";
 
 import "./index.css";
 
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+]);
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <ChakraProvider>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </ChakraProvider>
-  </Provider>
+  <React.StrictMode>
+    <Provider store={store}>
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
+    </Provider>
+  </React.StrictMode>
 );
