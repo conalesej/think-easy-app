@@ -1,3 +1,3 @@
 import PostComponent from "./Post";
-
-export { PostComponent };
+import CreateModal from "./CreateModal";
+export { PostComponent, CreateModal };

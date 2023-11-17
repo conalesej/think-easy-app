@@ -10,6 +10,7 @@ import {
   Divider,
   Box,
   Text,
+  Highlight,
 } from "@chakra-ui/react";
 
 import { Post } from "../../features/post/types";
@@ -19,6 +20,7 @@ interface IPost {
   post: Post;
 }
 const PostComponent: React.FC<IPost> = ({ post }) => {
+  const searchPhrase = "ext";
   const { title, content, authorId, createdAt, published, updatedAt, id } =
     post;
 
@@ -29,13 +31,21 @@ const PostComponent: React.FC<IPost> = ({ post }) => {
   const [createdDateString, _] = new Date(createdAt)
     .toLocaleString()
     .split(",");
+
   return (
     <Card padding={"1rem"}>
       <CardHeader>
         <Stack direction={"row"} justifyContent={"space-between"}>
           <Stack direction={"column"}>
             <Stack direction={"row"}>
-              <Heading size="sm">{title}</Heading>
+              <Heading size="sm">
+                <Highlight
+                  query={searchPhrase}
+                  styles={{ bg: "blue.400", color: "white", borderRadius: "2" }}
+                >
+                  {title}
+                </Highlight>
+              </Heading>
               <Box>
                 <Text
                   fontSize={"x-small"}
