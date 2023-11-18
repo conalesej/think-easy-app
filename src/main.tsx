@@ -10,11 +10,34 @@ import { store } from "./store.ts";
 import "./index.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { PostPage, UserPosts } from "./components/organisms/";
+import Layout from "./Layout.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <Layout>
+        <App />
+      </Layout>
+    ),
+  },
+
+  {
+    path: "/posts/:id",
+    element: (
+      <Layout>
+        <PostPage />
+      </Layout>
+    ),
+  },
+  {
+    path: "/users/:id/posts",
+    element: (
+      <Layout>
+        <UserPosts />
+      </Layout>
+    ),
   },
 ]);
 

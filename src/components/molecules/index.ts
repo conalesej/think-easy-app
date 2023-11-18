@@ -1,3 +1,4 @@
 import FilterBar from "./FilterBar";
 import PostsTable from "./PostsTable";
-export { FilterBar, PostsTable };
+import PostDetails from "./PostDetails";
+export { FilterBar, PostsTable, PostDetails };

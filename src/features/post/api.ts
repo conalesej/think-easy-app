@@ -10,7 +10,7 @@ export const postApi = createApi({
       // Retrieve the access token from wherever you have stored it
       // const accessToken = (getState() as RootState).auth.authTokens.accessToken;
       const accessToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbHAyYW9zemcwMDBkbWk3bTY0YW55bWoyIiwiaWF0IjoxNzAwMjA4Mjc4LCJleHAiOjE3MDAyMDkxNzh9.3eChiL-L_ozbaU6USN6tFAO9TLPSilTMTi2SH33dsPg";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbHAyYW9zemcwMDBkbWk3bTY0YW55bWoyIiwiaWF0IjoxNzAwMzE3NDUzLCJleHAiOjE3MDAzMTgzNTN9.ePyqo-j6UHZr4yzUM5nFkYrpHKwzvxuWbGV-rXsCHFQ";
       if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken}`);
       }
@@ -24,6 +24,14 @@ export const postApi = createApi({
       query: () => `/`,
       providesTags: ["Posts"],
     }),
+    getPost: builder.query<Post, string>({
+      query: (postId: string) => `/${postId}`,
+      providesTags: ["Posts"],
+    }),
+    getPostsByUserId: builder.query<Post[], string>({
+      query: (authorId: string) => `/user/${authorId}`,
+      providesTags: ["Posts"],
+    }),
     postPosts: builder.mutation<any, PostInput>({
       query: ({ title, content, published }) => ({
         url: `/`,
@@ -35,4 +43,9 @@ export const postApi = createApi({
   }),
 });
 
-export const { useGetPostsQuery, usePostPostsMutation } = postApi;
+export const {
+  useGetPostsQuery,
+  useGetPostQuery,
+  useGetPostsByUserIdQuery,
+  usePostPostsMutation,
+} = postApi;

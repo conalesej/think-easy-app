@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 
 import {
   Modal,
@@ -15,21 +15,16 @@ import {
   Textarea,
   Stack,
   FormErrorMessage,
-  FormHelperText,
   Switch,
 } from "@chakra-ui/react";
 import { usePostPostsMutation } from "../../features/post/api";
+import { useForm } from "react-hook-form";
 
 interface ICreateModal {
   isModalOpen: boolean;
-  onModalOpen: () => void;
   onModalClose: () => void;
 }
-const CreateModal: React.FC<ICreateModal> = ({
-  isModalOpen,
-  onModalClose,
-  onModalOpen,
-}) => {
+const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
   const [
     savePost,
     {
@@ -39,44 +34,21 @@ const CreateModal: React.FC<ICreateModal> = ({
     },
   ] = usePostPostsMutation();
 
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    published: true,
-  });
+  const {
+    register,
+    handleSubmit: rhfHandleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const [formErrors, setFormErrors] = useState({
-    title: "",
-    content: "",
-  });
+  const onSubmit = (data: { [key: string]: any }) => {
+    if (Object.keys(errors).length) return;
+    savePost({ ...data } as {
+      title: string;
+      content: string;
+      published: boolean;
+    });
 
-  const hasErrors =
-    formErrors.title.length > 0 || formErrors.content.length > 0;
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const value = e.target.value ? e.target.value : e.target.value.trim();
-    const name = e.target.name;
-
-    if (!value) {
-      setFormErrors((prev) => ({
-        ...prev,
-        [name]: "This field can't be empty!",
-      }));
-    }
-    if (value && formErrors[name as "title" | "content"]) {
-      setFormErrors((prev) => ({ ...prev, [name]: "" }));
-    }
-
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log({ hasErrors });
-    if (hasErrors) return;
-    savePost({ ...formData });
+    if (!isSaveSuccess) return;
     onModalClose();
   };
 
@@ -85,50 +57,52 @@ const CreateModal: React.FC<ICreateModal> = ({
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={rhfHandleSubmit(onSubmit)}>
             <ModalHeader>Create Post</ModalHeader>
             <ModalCloseButton />
 
             <Stack spacing={2}>
-              <FormControl isInvalid={!!formErrors.title} isRequired>
+              <FormControl isInvalid={!!errors?.title}>
                 <FormLabel>Title</FormLabel>
                 <Input
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
+                  {...register("title", {
+                    required: "This field is required!",
+                    maxLength: 50,
+                  })}
                 />
-                {!!formErrors.title && (
+                {errors?.title?.type === "maxLength" && (
+                  <FormErrorMessage>
+                    Max length exceeded. It should be no more than 50
+                    characters.
+                  </FormErrorMessage>
+                )}
+                {errors?.title?.type === "required" && (
                   <FormErrorMessage>Title is required.</FormErrorMessage>
                 )}
               </FormControl>
 
-              <FormControl isInvalid={!!formErrors.title} isRequired>
+              <FormControl isInvalid={!!errors?.content}>
                 <FormLabel>Content</FormLabel>
                 <Textarea
-                  name="content"
-                  value={formData.content}
-                  onChange={handleChange}
+                  {...register("content", {
+                    required: "This field is required!",
+                    maxLength: 1000,
+                  })}
                 />
-                {!!formErrors.content && (
-                  <FormErrorMessage>Content is required.</FormErrorMessage>
+                {errors?.content?.type === "maxLength" && (
+                  <FormErrorMessage>
+                    Max length exceeded. It should be no more than 1000
+                    characters.
+                  </FormErrorMessage>
+                )}
+                {errors?.content?.type === "required" && (
+                  <FormErrorMessage>Title is required.</FormErrorMessage>
                 )}
               </FormControl>
 
               <FormControl>
                 <FormLabel>Published</FormLabel>
-                <Switch
-                  name="published"
-                  isChecked={formData.published}
-                  onChange={() =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      published: !prev.published,
-                    }))
-                  }
-                />
-                {!!formErrors.content && (
-                  <FormErrorMessage>Content is required.</FormErrorMessage>
-                )}
+                <Switch {...register("published")} />
               </FormControl>
             </Stack>
 

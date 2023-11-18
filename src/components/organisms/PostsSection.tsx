@@ -12,7 +12,7 @@ const PostsSection: React.FC<IPostsSection> = () => {
     <Flex padding={"1rem 2rem 0.5rem"} direction={"column"} gap={"1rem"}>
       <Stack direction="row" justifyContent="space-between">
         <Text fontSize={"xx-large"} as={"b"}>
-          Posts
+          Posts 📃
         </Text>
         <Button
           colorScheme="messenger"
@@ -22,13 +22,7 @@ const PostsSection: React.FC<IPostsSection> = () => {
         >
           Add Post
         </Button>
-        {isOpen && (
-          <CreateModal
-            isModalOpen={isOpen}
-            onModalOpen={onOpen}
-            onModalClose={onClose}
-          />
-        )}
+        {isOpen && <CreateModal isModalOpen={isOpen} onModalClose={onClose} />}
       </Stack>
       <Stack>
         <FilterBar />
