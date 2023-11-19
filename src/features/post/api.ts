@@ -8,9 +8,10 @@ export const postApi = createApi({
     baseUrl: "https://frontend-test-be.stage.thinkeasy.cz/posts",
     prepareHeaders: (headers, { getState }) => {
       // Retrieve the access token from wherever you have stored it
-      // const accessToken = (getState() as RootState).auth.authTokens.accessToken;
-      const accessToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbHAyYW9zemcwMDBkbWk3bTY0YW55bWoyIiwiaWF0IjoxNzAwMzE3NDUzLCJleHAiOjE3MDAzMTgzNTN9.ePyqo-j6UHZr4yzUM5nFkYrpHKwzvxuWbGV-rXsCHFQ";
+      const accessToken = (getState() as RootState).auth.authTokens.accessToken;
+      const refreshToken = (getState() as RootState).auth.authTokens
+        .refreshToken;
+
       if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken}`);
       }

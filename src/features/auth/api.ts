@@ -2,37 +2,35 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
   AuthLoginInput,
   AuthLoginResponse,
+  AuthRefreshTokenInput,
+  AuthRefreshTokenResponse,
   AuthSignUpInput,
   AuthSignUpResponse,
   AuthTokens,
 } from "./types";
-import { RootState } from "../../store";
+import { RootState, store } from "../../store";
 
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "https://frontend-test-be.stage.thinkeasy.cz/auth",
-    // prepareHeaders: (headers, { getState }) => {
-    //   // Retrieve the access token from wherever you have stored it
-    //   const accessToken = (getState() as RootState).;
+    prepareHeaders: (headers, { getState }) => {
+      const accessToken = (getState() as RootState).auth.authTokens.accessToken;
+      if (accessToken) {
+        headers.set("Authorization", `Bearer ${accessToken}`);
+      }
 
-    //   if (accessToken) {
-    //     headers.set("Authorization", `Bearer ${accessToken}`);
-    //   }
-
-    //   return headers;
-    // },
+      return headers;
+    },
   }),
-  //   tagTypes: ["Posts"], // Used for Caching
   endpoints: (builder) => ({
     postSignUp: builder.mutation<AuthSignUpResponse, AuthSignUpInput>({
-      query: ({ email, password, firstName, lastName }) => ({
+      query: ({ email, password, firstname, lastname }) => ({
         url: `/signup`,
         method: "POST",
 
-        body: { email, password, firstName, lastName },
+        body: { email, password, firstname, lastname },
       }),
-      //   invalidatesTags: ["Posts"],
     }),
     postLogin: builder.mutation<AuthLoginResponse, AuthLoginInput>({
       query: ({ email, password }) => ({
@@ -41,9 +39,24 @@ export const authApi = createApi({
 
         body: { email, password },
       }),
-      //   invalidatesTags: ["Posts"],
+    }),
+    // prettier-ignore
+    postRefreshToken: builder.mutation<AuthRefreshTokenResponse,AuthRefreshTokenInput>({
+      query: ({ token }) => {
+
+        return {
+          url: `/refresh-token`,
+          method: "POST",
+  
+          body: { token:token },
+        }
+      },
     }),
   }),
 });
 
-export const { usePostSignUpMutation, usePostLoginMutation } = authApi;
+export const {
+  usePostSignUpMutation,
+  usePostLoginMutation,
+  usePostRefreshTokenMutation,
+} = authApi;

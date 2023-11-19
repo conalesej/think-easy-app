@@ -1,12 +1,32 @@
 import React from "react";
-import { Box } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Button, Flex, Stack, Text } from "@chakra-ui/react";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { usePostRefreshTokenMutation } from "../../features/auth/api";
 
 interface ITopBar {}
 
 const TopBar: React.FC<ITopBar> = ({}) => {
+  const location = useLocation();
+
+  const isAtPosts = location.pathname !== "/";
+
+  const authUser = useSelector(
+    (state: RootState) => state.auth.authLoginResponse
+  );
+
+  const [refreshToken, { data, error, isSuccess, isLoading }] =
+    usePostRefreshTokenMutation();
+
+  const displayName =
+    !!authUser.user.firstname && !!authUser.user.lastname
+      ? ` ${authUser.user.firstname} ${authUser.user.lastname}`
+      : "";
+
   return (
-    <Box
+    <Flex
       className="shadow-sm"
       padding={"1.5rem 2rem"}
       background={"white"}
@@ -16,9 +36,22 @@ const TopBar: React.FC<ITopBar> = ({}) => {
       position={"sticky"}
       top={0}
       zIndex={999}
+      gap={2}
+      alignItems={"center"}
     >
-      <Link to="/">Post Its</Link>
-    </Box>
+      {isAtPosts && (
+        <Button
+          colorScheme="messenger"
+          variant="outline"
+          leftIcon={<ArrowBackIcon />}
+        >
+          <Link to="/">Go back to Posts</Link>
+        </Button>
+      )}
+      <Text>
+        👋 Hi{displayName}! {!isAtPosts && "Welcome 🌊"}
+      </Text>
+    </Flex>
   );
 };
 

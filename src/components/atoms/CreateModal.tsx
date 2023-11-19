@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   Modal,
@@ -19,19 +19,27 @@ import {
 } from "@chakra-ui/react";
 import { usePostPostsMutation } from "../../features/post/api";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearAuthTokens,
+  revalidateToken,
+} from "../../features/auth/authSlice";
+import { RootState } from "../../store";
 
 interface ICreateModal {
   isModalOpen: boolean;
   onModalClose: () => void;
 }
 const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [
     savePost,
-    {
-      isLoading: isSaveLoading,
-      isSuccess: isSaveSuccess,
-      isUninitialized: isSaveUninitialized,
-    },
+    { isLoading: isSaveLoading, isSuccess: isSaveSuccess, error: saveError },
   ] = usePostPostsMutation();
 
   const {
@@ -47,10 +55,30 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
       content: string;
       published: boolean;
     });
-
-    if (!isSaveSuccess) return;
-    onModalClose();
   };
+
+  useEffect(() => {
+    if (isSaveSuccess) {
+      toast.success("🦄 Post created successfully!");
+      onModalClose();
+    }
+  }, [isSaveSuccess]);
+
+  useEffect(() => {
+    if (saveError) {
+      if ((saveError as FetchBaseQueryError).status === 401) {
+        toast.error("It seems that your token expired!");
+        toast.warn("Restoring token...", {
+          autoClose: false,
+        });
+        dispatch(revalidateToken());
+        // dispatch(clearAuthTokens());
+        // navigate("/login");
+      } else {
+        toast.error(" There was an error from the server. Try again later!😔");
+      }
+    }
+  }, [saveError]);
 
   return (
     <Modal isOpen={isModalOpen} onClose={onModalClose} size={"xl"}>
@@ -112,13 +140,13 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
                 colorScheme="blue"
                 onClick={() => {
                   onModalClose();
+                  toast.dismiss();
                 }}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                disabled={true}
                 isLoading={isSaveLoading}
                 loadingText="Saving"
                 colorScheme="blue"

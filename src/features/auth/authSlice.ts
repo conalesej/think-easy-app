@@ -1,29 +1,96 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { AuthLoginInput, AuthSignUpInput, AuthTokens } from "./types";
+import { toast } from "react-toastify";
+
+import {
+  AuthLoginInput,
+  AuthLoginResponse,
+  AuthSignUpInput,
+  AuthTokens,
+} from "./types";
+import { authApi } from "./api";
 
 export interface AuthState {
   authTokens: AuthTokens;
   authLoginInput: AuthLoginInput;
-  authSignUpInput: AuthSignUpInput;
+  authLoginResponse: AuthLoginResponse;
+  shouldRevalidateToken: boolean;
+  // authSignUpInput: AuthSignUpInput;
 }
 
 const initialState: AuthState = {
   authTokens: { accessToken: "", refreshToken: "" },
   authLoginInput: { email: "", password: "" },
-  authSignUpInput: { email: "", password: "", firstName: "", lastName: "" },
+  authLoginResponse: {
+    accessToken: "",
+    refreshToken: "",
+    user: {
+      email: "",
+      firstname: "",
+      lastname: "",
+      createdAt: "",
+      id: "",
+      role: "",
+      updatedAt: "",
+      password: "",
+    },
+  },
+  shouldRevalidateToken: false,
+  // authSignUpInput: { email: "", password: "", firstname: "", lastname: "" },
 };
 
 export const authSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    increment: (state) => {
-      // Write shit here
+    clearAuthTokens: (state) => {
+      state.authTokens = { accessToken: "", refreshToken: "" };
+      state.authLoginResponse = {
+        accessToken: "",
+        refreshToken: "",
+        user: {
+          email: "",
+          firstname: "",
+          lastname: "",
+          createdAt: "",
+          id: "",
+          role: "",
+          updatedAt: "",
+          password: "",
+        },
+      };
     },
+    setEmail: (state, { payload }) => {
+      state.authLoginInput.email = payload;
+    },
+    revalidateToken: (state) => {
+      state.shouldRevalidateToken = true;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        authApi.endpoints.postLogin.matchFulfilled,
+        (state, action) => {
+          const { payload } = action;
+          state.authLoginResponse = payload;
+          state.authTokens = {
+            accessToken: payload.accessToken,
+            refreshToken: payload.refreshToken,
+          };
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.postRefreshToken.matchFulfilled,
+        (state, action) => {
+          const { payload } = action;
+          toast.dismiss();
+          console.log(payload);
+          state.authTokens.accessToken = payload.access_token;
+        }
+      );
   },
 });
 
-export const { increment } = authSlice.actions;
+export const { clearAuthTokens, setEmail, revalidateToken } = authSlice.actions;
 
 export default authSlice.reducer;

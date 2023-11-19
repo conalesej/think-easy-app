@@ -4,21 +4,49 @@ import App from "./App.tsx";
 
 import { ChakraProvider } from "@chakra-ui/react";
 
-import { Provider } from "react-redux";
-import { store } from "./store.ts";
+import { Provider, useSelector } from "react-redux";
+import { RootState, store } from "./store.ts";
+import { ToastContainer } from "react-toastify";
 
 import "./index.css";
 
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { PostPage, UserPosts } from "./components/organisms/";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { Login, PostPage, SignUp, UserPosts } from "./components/organisms/";
 import Layout from "./Layout.tsx";
+import ErrorComponent from "./Error.tsx";
+
+const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
+  const authToken = useSelector((state: RootState) => state.auth.authTokens);
+  const locationPath = useLocation().pathname;
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!authToken.accessToken) {
+      navigate("/login");
+    } else {
+      if (locationPath === "/login") navigate("/");
+    }
+  }, []);
+
+  return element;
+};
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Layout>
-        <App />
+        <ProtectedRoute element={<App />} />
+      </Layout>
+    ),
+    errorElement: (
+      <Layout>
+        <ErrorComponent />
       </Layout>
     ),
   },
@@ -27,7 +55,7 @@ const router = createBrowserRouter([
     path: "/posts/:id",
     element: (
       <Layout>
-        <PostPage />
+        <ProtectedRoute element={<PostPage />} />
       </Layout>
     ),
   },
@@ -35,9 +63,17 @@ const router = createBrowserRouter([
     path: "/users/:id/posts",
     element: (
       <Layout>
-        <UserPosts />
+        <ProtectedRoute element={<UserPosts />} />
       </Layout>
     ),
+  },
+  {
+    path: "/login",
+    element: <ProtectedRoute element={<Login />} />,
+  },
+  {
+    path: "/signup",
+    element: <SignUp />,
   },
 ]);
 
@@ -46,6 +82,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <ChakraProvider>
         <RouterProvider router={router} />
+        <ToastContainer />
       </ChakraProvider>
     </Provider>
   </React.StrictMode>
