@@ -13,7 +13,7 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { formatDistanceToNow } from "date-fns";
@@ -23,24 +23,15 @@ interface IUserPanel {
   isDrawerOpen: boolean;
 }
 const UserPanel: React.FC<IUserPanel> = ({ onDrawerClose, isDrawerOpen }) => {
-  const {
-    email,
-    firstname,
-    lastname,
-    createdAt,
-    id,
-    role,
-    updatedAt,
-    password,
-  } = useSelector((state: RootState) => state.auth.authLoginResponse.user);
+  const { email, firstname, lastname, createdAt, role } = useSelector(
+    (state: RootState) => state.auth.authLoginResponse.user
+  );
 
   const formattedTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
 
-  const [createdDateString, _] = new Date(createdAt)
-    .toLocaleString()
-    .split(",");
+  const [createdDateString] = new Date(createdAt).toLocaleString().split(",");
 
   return (
     <Drawer placement={"left"} onClose={onDrawerClose} isOpen={isDrawerOpen}>
@@ -83,7 +74,7 @@ const UserPanel: React.FC<IUserPanel> = ({ onDrawerClose, isDrawerOpen }) => {
             onClick={() => {
               localStorage.clear();
               window.location.reload();
-              toast.success("You have been logout to the App!")
+              toast.success("You have been logout to the App!");
             }}
             colorScheme="red"
             variant={"outline"}

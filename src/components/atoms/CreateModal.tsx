@@ -21,22 +21,12 @@ import { usePostPostsMutation } from "../../features/post/api";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearAuthTokens,
-  revalidateToken,
-} from "../../features/auth/authSlice";
-import { RootState } from "../../store";
 
 interface ICreateModal {
   isModalOpen: boolean;
   onModalClose: () => void;
 }
 const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [
     savePost,
     { isLoading: isSaveLoading, isSuccess: isSaveSuccess, error: saveError },
@@ -72,7 +62,6 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
         toast.warn("Restoring token...", {
           autoClose: false,
         });
-        dispatch(revalidateToken());
       } else {
         toast.error(" There was an error from the server. Try again later!😔");
       }
@@ -139,7 +128,6 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
                 colorScheme="blue"
                 onClick={() => {
                   onModalClose();
-                  toast.dismiss();
                 }}
               >
                 Cancel
@@ -151,7 +139,7 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
                 colorScheme="blue"
                 mr={3}
                 onClick={() => {
-                  //   onModalClose();
+                  onModalClose();
                 }}
               >
                 Save

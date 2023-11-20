@@ -1,17 +1,11 @@
 import React, { useEffect } from "react";
-import {
-  Button,
-  Flex,
-  Stack,
-  Text,
-  Tooltip,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, Flex, Text, Tooltip, useDisclosure } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { toast } from "react-toastify";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { usePostRefreshTokenMutation } from "../../features/auth/api";
+import { RootState } from "../../store";
 import { UserPanel } from "../atoms";
 
 interface ITopBar {}
@@ -35,23 +29,20 @@ const TopBar: React.FC<ITopBar> = ({}) => {
     (state: RootState) => state.auth.authTokens.accessToken
   );
 
-  const shouldRevalidateToken = useSelector(
-    (state: RootState) => state.auth.shouldRevalidateToken
-  );
-
   const [refreshToken] = usePostRefreshTokenMutation();
-
-  useEffect(() => {
-    if (shouldRevalidateToken) {
-      console.log("Hello world");
-      refreshToken({ token: authRefreshToken });
-    }
-  }, [shouldRevalidateToken]);
-
   const displayName =
     !!authUser.user.firstname && !!authUser.user.lastname
       ? ` ${authUser.user.firstname} ${authUser.user.lastname}`
       : "";
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refreshToken({ token: authRefreshToken });
+      toast.info("Restoring your token on going...", { autoClose: 2500 });
+    }, 60 * 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   return (
     <>

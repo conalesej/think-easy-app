@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 import { PostsSection } from "./components/organisms";
-import Layout from "./Layout";
 
 const App = () => {
   return (

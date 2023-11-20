@@ -9,8 +9,6 @@ export const postApi = createApi({
     prepareHeaders: (headers, { getState }) => {
       // Retrieve the access token from wherever you have stored it
       const accessToken = (getState() as RootState).auth.authTokens.accessToken;
-      const refreshToken = (getState() as RootState).auth.authTokens
-        .refreshToken;
 
       if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken}`);

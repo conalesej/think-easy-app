@@ -11,13 +11,14 @@ import {
 } from "@chakra-ui/react";
 import { usePostSignUpMutation } from "../../features/auth/api";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthSignUpInput } from "../../features/auth/types";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 import { isEmailValid, isPasswordValid } from "../utils";
 import { useDispatch } from "react-redux";
 import { setEmail } from "../../features/auth/authSlice";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 interface ISignup {}
 const SignUp: React.FC<ISignup> = () => {
   const dispatch = useDispatch();
@@ -51,13 +52,13 @@ const SignUp: React.FC<ISignup> = () => {
       dispatch(setEmail(userEmail));
       navigate("/login");
     }
-  }, [isSignupSuccess]);
+  }, [isSignupSuccess, dispatch, navigate, userEmail]);
 
   useEffect(() => {
     if (signupErrors) {
       toast.error(
         `Error ${(signupErrors as FetchBaseQueryError).status} : ${
-          // @ts-ignore
+          // @ts-expect-error
           (signupErrors as FetchBaseQueryError).data.message
         }`
       );
@@ -165,10 +166,18 @@ const SignUp: React.FC<ISignup> = () => {
 
         <FormControl
           display={"flex"}
-          justifyContent={"end"}
+          justifyContent={"space-between"}
           marginTop={"0.75rem"}
           gap={2}
         >
+          <Button
+            loadingText="Saving"
+            colorScheme="messenger"
+            variant={"outline"}
+            leftIcon={<ArrowBackIcon />}
+          >
+            <Link to={"/login"}>Login</Link>
+          </Button>
           <Button
             type="submit"
             isLoading={isSignupLoading}

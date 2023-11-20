@@ -1,21 +1,18 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   Card,
   CardHeader,
   CardBody,
-  Heading,
   Stack,
   Divider,
   Box,
   Text,
-  Highlight,
   Skeleton,
   SkeletonText,
   Flex,
 } from "@chakra-ui/react";
 import { Post } from "../../features/post/types";
-import { formatDistanceToNow } from "date-fns";
 import { useGetPostQuery } from "../../features/post/api";
 import { PostDetails } from "../molecules";
 
@@ -33,13 +30,9 @@ interface IPostPage {}
 const PostPage: React.FC<IPostPage> = () => {
   const { id } = useParams();
 
-  const { data, isFetching, isSuccess } = useGetPostQuery(id ? id : "");
+  const { data, isFetching } = useGetPostQuery(id ? id : "");
 
   const { title, content } = data ? data : (emptyData as Post);
-
-  // if (!isSuccess) {
-  //   return <div>Something Wrong, Refresh</div>;
-  // }
 
   return (
     <Flex margin={"20px auto 0"} width={0.95} minWidth={"700px"} gap={5}>

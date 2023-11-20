@@ -1,12 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-import {
-  AuthLoginInput,
-  AuthLoginResponse,
-  AuthSignUpInput,
-  AuthTokens,
-} from "./types";
+import { AuthLoginInput, AuthLoginResponse, AuthTokens } from "./types";
 import { authApi } from "./api";
 
 export interface AuthState {
@@ -14,7 +9,6 @@ export interface AuthState {
   authLoginInput: AuthLoginInput;
   authLoginResponse: AuthLoginResponse;
   shouldRevalidateToken: boolean;
-  // authSignUpInput: AuthSignUpInput;
 }
 
 const initialState: AuthState = {
@@ -35,7 +29,6 @@ const initialState: AuthState = {
     },
   },
   shouldRevalidateToken: false,
-  // authSignUpInput: { email: "", password: "", firstname: "", lastname: "" },
 };
 
 export const authSlice = createSlice({
@@ -62,10 +55,6 @@ export const authSlice = createSlice({
     setEmail: (state, { payload }) => {
       state.authLoginInput.email = payload;
     },
-    revalidateToken: (state) => {
-      console.log("Revalidate mo na");
-      state.shouldRevalidateToken = true;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -84,14 +73,18 @@ export const authSlice = createSlice({
         authApi.endpoints.postRefreshToken.matchFulfilled,
         (state, action) => {
           const { payload } = action;
-          toast.dismiss();
+          toast.success("🔒 Token Restored!");
           state.authTokens.accessToken = payload.access_token;
           state.shouldRevalidateToken = false;
         }
-      );
+      )
+      .addMatcher(authApi.endpoints.postRefreshToken.matchRejected, (state) => {
+        toast.dismiss();
+        state.shouldRevalidateToken = false;
+      });
   },
 });
 
-export const { clearAuthTokens, setEmail, revalidateToken } = authSlice.actions;
+export const { clearAuthTokens, setEmail } = authSlice.actions;
 
 export default authSlice.reducer;

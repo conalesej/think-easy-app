@@ -24,9 +24,7 @@ export const postSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    increment: (state) => {
-      // Write shit here
-    },
+    increment: () => {},
   },
   extraReducers: (builder) => {
     builder.addMatcher(

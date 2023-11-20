@@ -30,7 +30,7 @@ const PostDetails: React.FC<IPostDetails> = ({ post, isLoading = false }) => {
       })
     : "";
 
-  const [createdDateString, _] = createdAt
+  const [createdDateString] = createdAt
     ? new Date(createdAt).toLocaleString().split(",")
     : ["", ""];
 
@@ -40,7 +40,7 @@ const PostDetails: React.FC<IPostDetails> = ({ post, isLoading = false }) => {
       })
     : "";
 
-  const [updatedDateString, __] = updatedAt
+  const [updatedDateString] = updatedAt
     ? new Date(updatedAt).toLocaleString().split(",")
     : ["", ""];
   return (

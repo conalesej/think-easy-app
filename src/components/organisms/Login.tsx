@@ -63,7 +63,7 @@ const Login: React.FC<ILogin> = () => {
     if (loginErrors) {
       toast.error(
         `Error ${(loginErrors as FetchBaseQueryError).status} : ${
-          // @ts-ignore
+          // @ts-expect-error
           (loginErrors as FetchBaseQueryError).data.message
         }`
       );

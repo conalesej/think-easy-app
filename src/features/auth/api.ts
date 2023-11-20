@@ -6,9 +6,8 @@ import {
   AuthRefreshTokenResponse,
   AuthSignUpInput,
   AuthSignUpResponse,
-  AuthTokens,
 } from "./types";
-import { RootState, store } from "../../store";
+import { RootState } from "../../store";
 
 export const authApi = createApi({
   reducerPath: "authApi",

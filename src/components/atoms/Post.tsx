@@ -29,9 +29,7 @@ const PostComponent: React.FC<IPost> = ({ post, searchPhrase = "" }) => {
     addSuffix: true,
   });
 
-  const [createdDateString, _] = new Date(createdAt)
-    .toLocaleString()
-    .split(",");
+  const [createdDateString] = new Date(createdAt).toLocaleString().split(",");
 
   return (
     <Link to={`/posts/${id}`}>

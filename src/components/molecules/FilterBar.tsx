@@ -1,7 +1,6 @@
 import { ArrowForwardIcon, Search2Icon } from "@chakra-ui/icons";
 import {
   Box,
-  Text,
   Input,
   InputGroup,
   InputLeftElement,
@@ -11,9 +10,10 @@ import {
 import React, { useState } from "react";
 
 interface IFilterBar {
+  searchPhrase: string;
   setSearchPhrase: (searchPhrase: string) => void;
 }
-const FilterBar: React.FC<IFilterBar> = ({ setSearchPhrase }) => {
+const FilterBar: React.FC<IFilterBar> = ({ searchPhrase, setSearchPhrase }) => {
   const [input, setInput] = useState("");
   return (
     <Box
@@ -37,7 +37,7 @@ const FilterBar: React.FC<IFilterBar> = ({ setSearchPhrase }) => {
             }
           }}
         />
-        {input.length && (
+        {input.length && searchPhrase && (
           <InputRightElement>
             <Button
               h="1.75rem"

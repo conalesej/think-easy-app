@@ -51,7 +51,10 @@ const PostsSection: React.FC<IPostsSection> = () => {
         {isOpen && <CreateModal isModalOpen={isOpen} onModalClose={onClose} />}
       </Stack>
       <Stack>
-        <FilterBar setSearchPhrase={(str: string) => setSearchPhrase(str)} />
+        <FilterBar
+          setSearchPhrase={(str: string) => setSearchPhrase(str)}
+          searchPhrase={searchPhrase}
+        />
       </Stack>
       <Stack>
         <PostsTable
