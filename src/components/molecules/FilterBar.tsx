@@ -37,7 +37,7 @@ const FilterBar: React.FC<IFilterBar> = ({ searchPhrase, setSearchPhrase }) => {
             }
           }}
         />
-        {input.length && searchPhrase && (
+        {input.length || searchPhrase && (
           <InputRightElement>
             <Button
               h="1.75rem"
