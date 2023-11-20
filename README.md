@@ -67,6 +67,34 @@ The application is designed to fulfill the following functionalities:
 ├── package.json
 └── README.md
 
+
+
+project-root/
+|-- src/
+| |-- components/
+| | |-- AuthorizationForm.tsx
+| | |-- PostList.tsx
+| | |-- PostForm.tsx
+| | |-- Notification.tsx
+| |-- pages/
+| | |-- index.tsx
+| | |-- posts/
+| | | |-- [userId].tsx
+| | |-- _app.tsx
+| |-- services/
+| | |-- authService.ts
+| | |-- postService.ts
+| |-- state/
+| | |-- userState.ts
+| | |-- postState.ts
+| |-- styles/
+| | |-- global.css
+| |-- public/
+| |-- next.config.js
+| |-- tsconfig.json
+| |-- package.json
+| |-- README.md
+
 ## How to Run
 
 1. Clone this repository. `Node.js` is a requirement.
