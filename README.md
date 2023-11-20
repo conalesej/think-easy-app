@@ -36,24 +36,24 @@ The application is designed to fulfill the following functionalities:
 7. **Styling**: ChakraUI or Tailwind
 
 ## Folder Structure
-```
+
 ├── /src
 │ ├── /components
 │ │ ├── /atoms
-| | | └── ...components  
+│ │ | └── ...components  
 │ │ ├── /molecules
-| | | └── ...components  
+│ │ │ └── ...components  
 │ │ └── /organisms
-| | | └── ...components  
+| │ │ └── ...components  
 │ ├── /features
 │ │ ├── /auth
-| | | ├── api.ts
-| | | ├── authSlice.ts
-| | | └── types.ts
+│ │ │ ├── api.ts
+│ │ │ ├── authSlice.ts
+│ │ │ └── types.ts
 │ │ └── /post
-| | | ├── api.ts
-| | | ├── postSlice.ts
-| | | └── types.ts
+│ │ │ ├── api.ts
+│ │ │ ├── postSlice.ts
+│ │ │ └── types.ts
 │ ├── Main.tsx
 │ ├── App.tsx
 │ ├── Error.tsx
