@@ -36,46 +36,49 @@ const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
   return <>{element}</>;
 };
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <Layout>
-        <ProtectedRoute element={<App />} />
-      </Layout>
-    ),
-    errorElement: (
-      <Layout>
-        <ErrorComponent />
-      </Layout>
-    ),
-  },
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: (
+        <Layout>
+          <ProtectedRoute element={<App />} />
+        </Layout>
+      ),
+      errorElement: (
+        <Layout>
+          <ErrorComponent />
+        </Layout>
+      ),
+    },
 
-  {
-    path: "/posts/:id",
-    element: (
-      <Layout>
-        <ProtectedRoute element={<PostPage />} />
-      </Layout>
-    ),
-  },
-  {
-    path: "/users/:id/posts",
-    element: (
-      <Layout>
-        <ProtectedRoute element={<UserPosts />} />
-      </Layout>
-    ),
-  },
-  {
-    path: "/login",
-    element: <ProtectedRoute element={<Login />} />,
-  },
-  {
-    path: "/signup",
-    element: <SignUp />,
-  },
-]);
+    {
+      path: "/posts/:id",
+      element: (
+        <Layout>
+          <ProtectedRoute element={<PostPage />} />
+        </Layout>
+      ),
+    },
+    {
+      path: "/users/:id/posts",
+      element: (
+        <Layout>
+          <ProtectedRoute element={<UserPosts />} />
+        </Layout>
+      ),
+    },
+    {
+      path: "/login",
+      element: <ProtectedRoute element={<Login />} />,
+    },
+    {
+      path: "/signup",
+      element: <SignUp />,
+    },
+  ],
+  { basename: import.meta.env.DEV ? "/" : "/react-vite-gh-pages/" }
+);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
