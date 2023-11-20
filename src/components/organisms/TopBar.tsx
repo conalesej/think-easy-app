@@ -38,7 +38,7 @@ const TopBar: React.FC<ITopBar> = ({}) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       refreshToken({ token: authRefreshToken });
-      toast.info("Restoring your token on going...", { autoClose: 2500 });
+      toast.info("Refreshing your token...", { autoClose: 2500 });
     }, 60 * 1000);
 
     return () => clearInterval(intervalId);

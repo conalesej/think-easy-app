@@ -73,7 +73,7 @@ export const authSlice = createSlice({
         authApi.endpoints.postRefreshToken.matchFulfilled,
         (state, action) => {
           const { payload } = action;
-          toast.success("🔒 Token Restored!");
+          toast.success("🔒 Token Refreshed!");
           state.authTokens.accessToken = payload.access_token;
           state.shouldRevalidateToken = false;
         }

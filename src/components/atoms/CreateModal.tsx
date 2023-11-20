@@ -59,7 +59,7 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
     if (saveError) {
       if ((saveError as FetchBaseQueryError).status === 401) {
         toast.error("It seems that your token expired!");
-        toast.warn("Restoring token...", {
+        toast.warn("Refreshing token...", {
           autoClose: false,
         });
       } else {
