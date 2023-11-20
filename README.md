@@ -36,6 +36,7 @@ The application is designed to fulfill the following functionalities:
 7. **Styling**: ChakraUI or Tailwind
 
 ## Folder Structure
+
 ├── /src
 │ ├── /components
 │ │ ├── /atoms
@@ -68,32 +69,6 @@ The application is designed to fulfill the following functionalities:
 └── README.md
 
 
-
-project-root/
-|-- src/
-| |-- components/
-| | |-- AuthorizationForm.tsx
-| | |-- PostList.tsx
-| | |-- PostForm.tsx
-| | |-- Notification.tsx
-| |-- pages/
-| | |-- index.tsx
-| | |-- posts/
-| | | |-- [userId].tsx
-| | |-- _app.tsx
-| |-- services/
-| | |-- authService.ts
-| | |-- postService.ts
-| |-- state/
-| | |-- userState.ts
-| | |-- postState.ts
-| |-- styles/
-| | |-- global.css
-| |-- public/
-| |-- next.config.js
-| |-- tsconfig.json
-| |-- package.json
-| |-- README.md
 
 ## How to Run
 
