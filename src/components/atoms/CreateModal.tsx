@@ -138,9 +138,6 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
                 loadingText="Saving"
                 colorScheme="blue"
                 mr={3}
-                onClick={() => {
-                  onModalClose();
-                }}
               >
                 Save
               </Button>

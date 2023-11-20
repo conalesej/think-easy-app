@@ -77,7 +77,7 @@ const router = createBrowserRouter(
       element: <SignUp />,
     },
   ],
-  { basename: import.meta.env.DEV ? "/" : "/react-vite-gh-pages/" }
+  { basename: import.meta.env.DEV ? "/" : "/think-easy-app/" }
 );
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
