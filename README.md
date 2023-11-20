@@ -74,7 +74,7 @@ The application is designed to fulfill the following functionalities:
 
 ## How to Run
 
-1. Clone this repository. `Node.js` is a requirement.
+1. Clone this repository `git clone https://github.com/conalesej/think-easy-app.git`. `Node.js` is a requirement.
 2. Install dependencies: `npm install` or `yarn install`.
 3. Run the application: `npm run dev` or `yarn run dev`.
 4. Open your browser and navigate to `http://localhost:5173`.
