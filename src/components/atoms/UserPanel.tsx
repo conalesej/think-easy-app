@@ -13,7 +13,6 @@ import {
   StackDivider,
   Text,
 } from "@chakra-ui/react";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { formatDistanceToNow } from "date-fns";
