@@ -4,6 +4,8 @@
 
 This mini application is a React 18  application with TypeScript, incorporating features for authorization and posts management. The application communicates with the backend using the provided API by ThinkEasy.cz!
 
+Deployed App - https://conalesej.github.io/think-easy-app/
+
 ## Requirements
 
 The application is designed to fulfill the following functionalities:
