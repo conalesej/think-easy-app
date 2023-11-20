@@ -36,7 +36,7 @@ The application is designed to fulfill the following functionalities:
 7. **Styling**: ChakraUI or Tailwind
 
 ## Folder Structure
-
+```
 ├── /src
 │ ├── /components
 │ │ ├── /atoms
@@ -68,7 +68,6 @@ The application is designed to fulfill the following functionalities:
 ├── package.json
 └── README.md
 ```
-
 
 ## How to Run
 
