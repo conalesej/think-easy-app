@@ -42,14 +42,20 @@ const PostPage: React.FC<IPostPage> = () => {
   // }
 
   return (
-    <Flex margin={"20px auto 0"} width={0.95} gap={5}>
+    <Flex margin={"20px auto 0"} width={0.95} minWidth={"700px"} gap={5}>
       <Stack flex={1}>
         <PostDetails post={data || emptyData} isLoading={isFetching} />
       </Stack>
       <Card flex={3} padding={"1rem"} h={"88vh"} maxH={"88vh"}>
         <CardHeader>
           <Stack direction={"row"} justifyContent={"space-between"}>
-            {!isFetching ? <Text fontSize={"1.25rem"} fontWeight="700"as={"h1"}>{title} </Text> : <Skeleton >TESTESTESTESTTESTESTESTESTTESTESTESTEST</Skeleton>}
+            {!isFetching ? (
+              <Text fontSize={"1.25rem"} fontWeight="700" as={"h1"}>
+                {title}{" "}
+              </Text>
+            ) : (
+              <Skeleton>TESTESTESTESTTESTESTESTESTTESTESTESTEST</Skeleton>
+            )}
           </Stack>
         </CardHeader>
         <Divider color={"lightgray"} width={"95%"} margin={"0 auto"} />

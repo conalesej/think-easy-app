@@ -21,6 +21,7 @@ const PostsSection: React.FC<IPostsSection> = () => {
       direction={"column"}
       gap={"1rem"}
       width={"50%"}
+      minWidth={"500px"}
       margin={"0 auto"}
     >
       <Stack direction="row" justifyContent="space-between">

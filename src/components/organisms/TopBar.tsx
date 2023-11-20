@@ -1,10 +1,18 @@
-import React from "react";
-import { Button, Flex, Stack, Text } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import {
+  Button,
+  Flex,
+  Stack,
+  Text,
+  Tooltip,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { usePostRefreshTokenMutation } from "../../features/auth/api";
+import { UserPanel } from "../atoms";
 
 interface ITopBar {}
 
@@ -13,12 +21,32 @@ const TopBar: React.FC<ITopBar> = ({}) => {
 
   const isAtPosts = location.pathname !== "/";
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const authUser = useSelector(
     (state: RootState) => state.auth.authLoginResponse
   );
 
-  const [refreshToken, { data, error, isSuccess, isLoading }] =
-    usePostRefreshTokenMutation();
+  const authRefreshToken = useSelector(
+    (state: RootState) => state.auth.authTokens.refreshToken
+  );
+
+  const authAccessToken = useSelector(
+    (state: RootState) => state.auth.authTokens.accessToken
+  );
+
+  const shouldRevalidateToken = useSelector(
+    (state: RootState) => state.auth.shouldRevalidateToken
+  );
+
+  const [refreshToken] = usePostRefreshTokenMutation();
+
+  useEffect(() => {
+    if (shouldRevalidateToken) {
+      console.log("Hello world");
+      refreshToken({ token: authRefreshToken });
+    }
+  }, [shouldRevalidateToken]);
 
   const displayName =
     !!authUser.user.firstname && !!authUser.user.lastname
@@ -26,32 +54,42 @@ const TopBar: React.FC<ITopBar> = ({}) => {
       : "";
 
   return (
-    <Flex
-      className="shadow-sm"
-      padding={"1.5rem 2rem"}
-      background={"white"}
-      borderBottom={1}
-      borderBottomColor={"lightgray"}
-      borderBottomStyle={"solid"}
-      position={"sticky"}
-      top={0}
-      zIndex={999}
-      gap={2}
-      alignItems={"center"}
-    >
-      {isAtPosts && (
-        <Button
-          colorScheme="messenger"
-          variant="outline"
-          leftIcon={<ArrowBackIcon />}
-        >
-          <Link to="/">Go back to Posts</Link>
-        </Button>
+    <>
+      <Flex
+        className="shadow-sm"
+        padding={"1.5rem 2rem"}
+        background={"white"}
+        borderBottom={1}
+        borderBottomColor={"lightgray"}
+        borderBottomStyle={"solid"}
+        position={"sticky"}
+        top={0}
+        zIndex={999}
+        gap={2}
+        alignItems={"center"}
+      >
+        {isAtPosts && (
+          <Button
+            colorScheme="messenger"
+            variant="outline"
+            leftIcon={<ArrowBackIcon />}
+          >
+            <Link to="/">Go back to Posts</Link>
+          </Button>
+        )}
+        <Tooltip label="My Info!">
+          <Text
+            onClick={() => onOpen()}
+            className="hover:underline cursor-pointer transform hover:scale-105 transition-transform duration-300 ease-in-out"
+          >
+            👋 Hi{displayName}! {!isAtPosts && "Welcome 🌊"}
+          </Text>
+        </Tooltip>
+      </Flex>
+      {authAccessToken && (
+        <UserPanel isDrawerOpen={isOpen} onDrawerClose={onClose} />
       )}
-      <Text>
-        👋 Hi{displayName}! {!isAtPosts && "Welcome 🌊"}
-      </Text>
-    </Flex>
+    </>
   );
 };
 

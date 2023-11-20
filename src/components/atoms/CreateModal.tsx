@@ -60,6 +60,7 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
   useEffect(() => {
     if (isSaveSuccess) {
       toast.success("🦄 Post created successfully!");
+
       onModalClose();
     }
   }, [isSaveSuccess]);
@@ -72,8 +73,6 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
           autoClose: false,
         });
         dispatch(revalidateToken());
-        // dispatch(clearAuthTokens());
-        // navigate("/login");
       } else {
         toast.error(" There was an error from the server. Try again later!😔");
       }
@@ -114,12 +113,12 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
                 <Textarea
                   {...register("content", {
                     required: "This field is required!",
-                    maxLength: 1000,
+                    maxLength: 3500,
                   })}
                 />
                 {errors?.content?.type === "maxLength" && (
                   <FormErrorMessage>
-                    Max length exceeded. It should be no more than 1000
+                    Max length exceeded. It should be no more than 3500
                     characters.
                   </FormErrorMessage>
                 )}
@@ -130,7 +129,7 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
 
               <FormControl>
                 <FormLabel>Published</FormLabel>
-                <Switch {...register("published")} />
+                <Switch defaultChecked {...register("published")} />
               </FormControl>
             </Stack>
 

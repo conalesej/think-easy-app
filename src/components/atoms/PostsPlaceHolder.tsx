@@ -7,7 +7,6 @@ import {
   Divider,
   Box,
   Text,
-  Highlight,
   SkeletonText,
   Skeleton,
 } from "@chakra-ui/react";
@@ -28,12 +27,14 @@ const PostsPlaceHolder: React.FC<IPostsPlaceHolder> = ({
             Empty Posts
           </Heading>
         </Stack>
-        <Stack>
-          <Text textAlign={"center"} fontSize={"2rem"}>
-            No posts found with "
-            {<span className="text-blue-700 font-bold">{searchPhrase}</span>}"
-          </Text>
-        </Stack>
+        {searchPhrase && (
+          <Stack>
+            <Text textAlign={"center"} fontSize={"2rem"}>
+              No posts found with "
+              {<span className="text-blue-700 font-bold">{searchPhrase}</span>}"
+            </Text>
+          </Stack>
+        )}
       </Box>
     );
   }

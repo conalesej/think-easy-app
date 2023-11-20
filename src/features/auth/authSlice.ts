@@ -63,6 +63,7 @@ export const authSlice = createSlice({
       state.authLoginInput.email = payload;
     },
     revalidateToken: (state) => {
+      console.log("Revalidate mo na");
       state.shouldRevalidateToken = true;
     },
   },
@@ -84,8 +85,8 @@ export const authSlice = createSlice({
         (state, action) => {
           const { payload } = action;
           toast.dismiss();
-          console.log(payload);
           state.authTokens.accessToken = payload.access_token;
+          state.shouldRevalidateToken = false;
         }
       );
   },
