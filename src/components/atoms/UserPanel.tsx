@@ -74,7 +74,6 @@ const UserPanel: React.FC<IUserPanel> = ({ onDrawerClose, isDrawerOpen }) => {
             onClick={() => {
               localStorage.clear();
               window.location.reload();
-              toast.success("You have been logout to the App!");
             }}
             colorScheme="red"
             variant={"outline"}

@@ -33,7 +33,7 @@ const ProtectedRoute = ({ element }: { element: React.ReactNode }) => {
     }
   }, []);
 
-  return element;
+  return <>{element}</>;
 };
 
 const router = createBrowserRouter([
@@ -78,12 +78,10 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ChakraProvider>
-        <RouterProvider router={router} />
-        <ToastContainer />
-      </ChakraProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <ChakraProvider>
+      <ToastContainer />
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  </Provider>
 );

@@ -9,7 +9,7 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.css";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
@@ -70,6 +70,8 @@ const Login: React.FC<ILogin> = () => {
     }
   }, [loginErrors]);
   useEffect(() => {
+    toast.success("🎍 Welcome ~ Please log in your credentials!")
+
     document.body.style.height = "100vh";
     document.body.style.width = "100vw";
     document.body.style.display = "flex";
@@ -91,78 +93,83 @@ const Login: React.FC<ILogin> = () => {
       document.body.style.backgroundSize = "";
       document.body.style.backgroundPosition = "";
     };
+
+    
   }, []);
   return (
-    <Card
-      width={"600px"}
-      display={"flex"}
-      flexDirection={"row"}
-      padding={"40px"}
-    >
-      <form className="w-full" onSubmit={rhfHandleSubmit(onSubmit)}>
-        <Text align={"center"} fontSize={"xx-large"}>
-          Log In
-        </Text>
+    <>
+      <ToastContainer />
+      <Card
+        width={"600px"}
+        display={"flex"}
+        flexDirection={"row"}
+        padding={"40px"}
+      >
+        <form className="w-full" onSubmit={rhfHandleSubmit(onSubmit)}>
+          <Text align={"center"} fontSize={"xx-large"}>
+            Log In
+          </Text>
 
-        <FormControl isInvalid={!!errors?.email}>
-          <FormLabel>Email address</FormLabel>
-          <Input
-            defaultValue={userEmail}
-            {...register("email", {
-              required: "This field is required!",
-              validate: isEmailValid,
-            })}
-          />
+          <FormControl isInvalid={!!errors?.email}>
+            <FormLabel>Email address</FormLabel>
+            <Input
+              defaultValue={userEmail}
+              {...register("email", {
+                required: "This field is required!",
+                validate: isEmailValid,
+              })}
+            />
 
-          {errors?.email?.type === "validate" && (
-            <FormErrorMessage>Invalid email address format</FormErrorMessage>
-          )}
-          {errors?.email?.type === "required" && (
-            <FormErrorMessage>An email address is required</FormErrorMessage>
-          )}
+            {errors?.email?.type === "validate" && (
+              <FormErrorMessage>Invalid email address format</FormErrorMessage>
+            )}
+            {errors?.email?.type === "required" && (
+              <FormErrorMessage>An email address is required</FormErrorMessage>
+            )}
 
-          {!Object.keys(errors).includes("email") && (
-            <FormHelperText>We'll never share your email.</FormHelperText>
-          )}
-        </FormControl>
+            {!Object.keys(errors).includes("email") && (
+              <FormHelperText>We'll never share your email.</FormHelperText>
+            )}
+          </FormControl>
 
-        <FormControl isInvalid={!!errors?.password}>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            {...register("password", {
-              required: "This field is required!",
-              validate: isPasswordValid,
-            })}
-          />
-          {errors?.password?.type === "validate" && (
-            <FormErrorMessage>Must be 8 characters atleast</FormErrorMessage>
-          )}
-          {errors?.password?.type === "required" && (
-            <FormErrorMessage>A password is required</FormErrorMessage>
-          )}
-        </FormControl>
+          <FormControl isInvalid={!!errors?.password}>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              {...register("password", {
+                required: "This field is required!",
+                validate: isPasswordValid,
+              })}
+            />
+            {errors?.password?.type === "validate" && (
+              <FormErrorMessage>Must be 8 characters atleast</FormErrorMessage>
+            )}
+            {errors?.password?.type === "required" && (
+              <FormErrorMessage>A password is required</FormErrorMessage>
+            )}
+          </FormControl>
 
-        <FormControl
-          display={"flex"}
-          justifyContent={"end"}
-          marginTop={"0.75rem"}
-          gap={2}
-        >
-          <Button loadingText="Saving" colorScheme="teal">
-            <Link to={"/signup"}> Sign Up</Link>
-          </Button>
-          <Button
-            type="submit"
-            isLoading={isLoginLoading}
-            colorScheme="blue"
-            onClick={() => {}}
+          <FormControl
+            display={"flex"}
+            justifyContent={"end"}
+            marginTop={"0.75rem"}
+            gap={2}
           >
-            Login
-          </Button>
-        </FormControl>
-      </form>
-    </Card>
+            <Button loadingText="Saving" colorScheme="teal">
+              <Link to={"/signup"}> Sign Up</Link>
+            </Button>
+            <Button
+              type="submit"
+              isLoading={isLoginLoading}
+              colorScheme="blue"
+              onClick={() => {}}
+            >
+              Login
+            </Button>
+          </FormControl>
+        </form>
+      </Card>
+    </>
   );
 };
 
