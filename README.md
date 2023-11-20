@@ -1,5 +1,5 @@
 
-https://github.com/conalesej/think-easy-app/assets/60915940/3708c84e-3b4e-405c-80c9-ff666b07adf1
+
 # Mini Application: Authorization and Posts
 
 This mini application is a React 18  application with TypeScript, incorporating features for authorization and posts management. The application communicates with the backend using the provided API by ThinkEasy.cz!
@@ -84,7 +84,7 @@ The application is designed to fulfill the following functionalities:
 #### Login and Signup Page
 ![image](https://github.com/conalesej/think-easy-app/assets/60915940/c23d849a-d7fc-4a5f-8181-3904ca9bce73)
 #### Logging in and out
-https://github.com/conalesej/think-easy-app/assets/60915940/f3d6ce5a-7350-4473-8630-53cd4a798201
+[https://github.com/conalesej/think-easy-app/assets/60915940/f3d6ce5a-7350-4473-8630-53cd4a798201](https://github.com/conalesej/think-easy-app/assets/60915940/3708c84e-3b4e-405c-80c9-ff666b07adf1)
 #### Automatic token Refresh
 https://github.com/conalesej/think-easy-app/assets/60915940/f41f654e-bfa0-41cb-8465-1c1dc7d36d13
 ### Posts and filter functions
