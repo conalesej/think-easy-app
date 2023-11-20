@@ -16,12 +16,14 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { formatDistanceToNow } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 interface IUserPanel {
   onDrawerClose: () => void;
   isDrawerOpen: boolean;
 }
 const UserPanel: React.FC<IUserPanel> = ({ onDrawerClose, isDrawerOpen }) => {
+  const navigate = useNavigate();
   const { email, firstname, lastname, createdAt, role } = useSelector(
     (state: RootState) => state.auth.authLoginResponse.user
   );
@@ -72,6 +74,7 @@ const UserPanel: React.FC<IUserPanel> = ({ onDrawerClose, isDrawerOpen }) => {
           <Button
             onClick={() => {
               localStorage.clear();
+              navigate("/");
               window.location.reload();
             }}
             colorScheme="red"
