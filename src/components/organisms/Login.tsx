@@ -70,7 +70,7 @@ const Login: React.FC<ILogin> = () => {
     }
   }, [loginErrors]);
   useEffect(() => {
-    toast.success("🎍 Welcome ~ Please log in your credentials!")
+    toast.success("🎍 Welcome ~ Please log in your credentials!");
 
     document.body.style.height = "100vh";
     document.body.style.width = "100vw";
@@ -93,13 +93,12 @@ const Login: React.FC<ILogin> = () => {
       document.body.style.backgroundSize = "";
       document.body.style.backgroundPosition = "";
     };
-
-    
   }, []);
   return (
     <>
       <ToastContainer />
       <Card
+        className="shadow-lg"
         width={"600px"}
         display={"flex"}
         flexDirection={"row"}
