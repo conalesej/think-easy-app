@@ -1,14 +1,18 @@
 import { Box, Divider, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetPostsByUserIdQuery } from "../../features/post/api";
 import { PostComponent as Post, PostsPlaceHolder } from "../atoms";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query/fetchBaseQuery";
 
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { clearAuthTokens } from "../../features/auth/authSlice";
 
 interface IUserPosts {}
 const UserPosts: React.FC<IUserPosts> = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const {
@@ -21,9 +25,13 @@ const UserPosts: React.FC<IUserPosts> = () => {
     if (error) {
       if ((error as FetchBaseQueryError).status === 401) {
         toast.error("It seems that your token expired!");
-        toast.warn("Restoring token...", {
-          autoClose: 10000,
+        toast.warn("Login again...", {
+          autoClose: 5000,
         });
+        setTimeout(() => {
+          dispatch(clearAuthTokens());
+          navigate("/login");
+        }, 2000);
       } else {
         toast.error(" There was an error from the server. Try again later!😔");
       }

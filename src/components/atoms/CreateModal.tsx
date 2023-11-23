@@ -21,12 +21,17 @@ import { usePostPostsMutation } from "../../features/post/api";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { useDispatch } from "react-redux";
+import { clearAuthTokens } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 interface ICreateModal {
   isModalOpen: boolean;
   onModalClose: () => void;
 }
 const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [
     savePost,
     { isLoading: isSaveLoading, isSuccess: isSaveSuccess, error: saveError },
@@ -59,9 +64,13 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
     if (saveError) {
       if ((saveError as FetchBaseQueryError).status === 401) {
         toast.error("It seems that your token expired!");
-        toast.warn("Refreshing token...", {
-          autoClose: false,
+        toast.warn("Login again...", {
+          autoClose: 5000,
         });
+        setTimeout(() => {
+          dispatch(clearAuthTokens());
+          navigate("/login");
+        }, 2000);
       } else {
         toast.error(" There was an error from the server. Try again later!😔");
       }
