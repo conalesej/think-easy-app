@@ -12,7 +12,7 @@ import { RootState } from "../../store";
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://frontend-test-be.stage.thinkeasy.cz/auth",
+    baseUrl: import.meta.env.VITE_API_URL_AUTH,
     prepareHeaders: (headers, { getState }) => {
       const accessToken = (getState() as RootState).auth.authTokens.accessToken;
       if (accessToken) {

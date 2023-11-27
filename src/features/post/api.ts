@@ -5,7 +5,7 @@ import { RootState } from "../../store";
 export const postApi = createApi({
   reducerPath: "postApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://frontend-test-be.stage.thinkeasy.cz/posts",
+    baseUrl: import.meta.env.VITE_API_URL_POSTS,
     prepareHeaders: (headers, { getState }) => {
       // Retrieve the access token from wherever you have stored it
       const accessToken = (getState() as RootState).auth.authTokens.accessToken;
