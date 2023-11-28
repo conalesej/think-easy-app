@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 import {
   Modal,
@@ -17,18 +20,39 @@ import {
   FormErrorMessage,
   Switch,
 } from "@chakra-ui/react";
+
 import { usePostPostsMutation } from "../../features/post/api";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { useDispatch } from "react-redux";
 import { clearAuthTokens } from "../../features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+
+import { z, ZodType } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ICreateModal {
   isModalOpen: boolean;
   onModalClose: () => void;
 }
+
+type FormType = {
+  title: string;
+  content: string;
+};
+const formSchema: ZodType<FormType> = z.object({
+  title: z
+    .string()
+    .min(3, "Title must be atleast 3 characters")
+    .max(50, "Max length exceeded. It should be no more than 50 characters."),
+  content: z
+    .string()
+    .min(3, "Content must be atleast 3 characters")
+    .max(
+      3500,
+      " Max length exceeded. It should be no more than 3500 characters."
+    ),
+});
+
 const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,7 +65,7 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
     register,
     handleSubmit: rhfHandleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: zodResolver(formSchema) });
 
   const onSubmit = (data: { [key: string]: any }) => {
     if (Object.keys(errors).length) return;
@@ -89,42 +113,23 @@ const CreateModal: React.FC<ICreateModal> = ({ isModalOpen, onModalClose }) => {
             <Stack spacing={2}>
               <FormControl isInvalid={!!errors?.title}>
                 <FormLabel>Title</FormLabel>
-                <Input
-                  {...register("title", {
-                    required: "This field is required!",
-                    maxLength: 50,
-                  })}
-                />
-                {errors?.title?.type === "maxLength" && (
+                <Input {...register("title")} />
+                {errors.title && (
                   <FormErrorMessage>
-                    Max length exceeded. It should be no more than 50
-                    characters.
+                    {errors.title.message as string}
                   </FormErrorMessage>
-                )}
-                {errors?.title?.type === "required" && (
-                  <FormErrorMessage>Title is required.</FormErrorMessage>
                 )}
               </FormControl>
 
               <FormControl isInvalid={!!errors?.content}>
                 <FormLabel>Content</FormLabel>
-                <Textarea
-                  {...register("content", {
-                    required: "This field is required!",
-                    maxLength: 3500,
-                  })}
-                />
-                {errors?.content?.type === "maxLength" && (
+                <Textarea {...register("content")} />
+                {errors.content && (
                   <FormErrorMessage>
-                    Max length exceeded. It should be no more than 3500
-                    characters.
+                    {errors.content.message as string}
                   </FormErrorMessage>
                 )}
-                {errors?.content?.type === "required" && (
-                  <FormErrorMessage>Title is required.</FormErrorMessage>
-                )}
               </FormControl>
-
               <FormControl>
                 <FormLabel>Published</FormLabel>
                 <Switch defaultChecked {...register("published")} />
